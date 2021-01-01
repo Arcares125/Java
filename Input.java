@@ -11,11 +11,11 @@ public class Input {
 	 private List<String> vAddress = new ArrayList<String>();
 	 private List<String> vInitial = new ArrayList<String>();
 	 
-	 protected String name;
-	 protected Integer age;
-	 protected String gender;
-	 protected String address;
-	 protected String initial;
+	 private String name;
+	 private Integer age;
+	 private String gender;
+	 private String address;
+	 private String initial;
 	 
 	public Input(){
 
