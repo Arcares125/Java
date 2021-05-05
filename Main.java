@@ -2,11 +2,16 @@ import java.util.*;
 public class Main {
 	Scanner scan = new Scanner(System.in);
 	Vector<Item> nItem = new Vector<>();
+	Vector<Store> nStore = new Vector<>();
+	Item item = new Item();
+	
 	
 	String pName;
 	Integer pPrice, page;
 	String pType, color, brand, author, category;
 	Double fPrice=0.0;
+	//-------------------
+	String store, address;
 	
 	void Reset() {
 		pName="";
@@ -35,7 +40,19 @@ public class Main {
 		System.out.printf("|%-4s |%-20s |%-20s |%-20s |%-20s|%-20s |%-20s |%-20s|\n",a,b,c,d,e,f,g,h);
 		System.out.println("===========================================================");
 		for(int i=0; i<nItem.size();i++) {
-			System.out.printf("|%-4d|%-20s|%-20s|%-20f|%-20s|%-20s|%-20s|%-20s|\n",i+1, nItem.get(i).name, nItem.get(i).type, nItem.get(i).price, nItem.get(i));
+			System.out.printf("|%-4d|%-20s|%-20s|%-20f|%-20s|%-20s|%-20s|%-20s|\n",i+1, nItem.get(i).getName(), nItem.get(i).getType(), nItem.get(i).getPrice(), nItem.get(i).getColor(), nItem.get(i).getBrand(), nItem.get(i).getAuthor(), nItem.get(i).getCategory());
+			
+		}
+		System.out.println("===========================================================");
+	}
+	
+	void view2() {
+		String a = "No. ", b = "Store's Name", c = "Store's Address";
+		System.out.println("===========================================================");
+		System.out.printf("|%-4s |%-20s |%-20s|\n",a,b,c);
+		System.out.println("===========================================================");
+		for(int i=0; i<nItem.size();i++) {
+			System.out.printf("|%-4d|%-20s|%-20s|\n",i+1, nStore.get(i).getnStore(), nStore.get(i).getnAddress());
 		}
 		System.out.println("===========================================================");
 	}
@@ -49,8 +66,9 @@ public class Main {
 			switch (pilih) {
 			case 1:
 				int choose1=0;
+				do {
 
-	
+
 				System.out.println("Item Menu");
 				System.out.println("=========================");
 				System.out.println("1. Create New Item");
@@ -73,7 +91,7 @@ public class Main {
 					do {
 						System.out.println("Input Product's Type: [Book || Stationary]");
 						pType = scan.nextLine();
-					}while(!(pType.equalsIgnoreCase("Book") || pType.equalsIgnoreCase("Stationery")));
+					}while(!(pType.equalsIgnoreCase("Book") || pType.equalsIgnoreCase("Stationary")));
 					
 					if(pType.equalsIgnoreCase("Stationary")) {
 						do {
@@ -122,13 +140,55 @@ public class Main {
 					} else {
 						view();
 					}
+				} else if(choose1 == 3) {
+					System.out.println();
 				}
+				}while(choose1 !=3);
 				
 				break;
 
-			default:
+			case 2:
+				int choose2=0;
+				do {
+					System.out.println("Store Menu");
+					System.out.println("=========================");
+					System.out.println("1. Create New Store");
+					System.out.println("2. View All Store");
+					System.out.println("3. Exit");
+					System.out.println("=============================");
+					System.out.println("Your Choice : ");
+					choose2 = scan.nextInt();scan.nextLine();
+					if(choose2 == 1) {
+						do {
+							System.out.println("Input Store Name");
+							store = scan.nextLine();
+						}while(store.length() < 5 || store.length() > 25);
+
+						do {
+							System.out.println("Input Store Address: [10-35]: ");
+							address = scan.nextLine();
+						}while(address.length() < 10 || address.length() > 35);
+						
+						nStore.add(new Store(store, address));
+					} else if(choose2 == 2) {
+						if(nStore.isEmpty()) {
+							System.out.println("JeHamedia still doesn't have any store...");
+						} else {
+							view2();
+						}
+					} else if(choose2 == 3) {
+						System.out.println();
+					}
+					
+
+				}while(choose2 != 3);
 				break;
+				
+			case 3:
+				System.out.println("Goodbye....");
+				System.exit(0);
 			}
+			
 			
 		}while(pilih != 3);
 		
