@@ -12,10 +12,8 @@ public class Item {
 	String category;
 	Integer page;
 	
-	
-	public Item() {
-		// TODO Auto-generated constructor stub
-	}
+	String store;
+	String address;
 
 
 	public Item(String name, double price, String type) {
@@ -23,6 +21,12 @@ public class Item {
 		this.name = name;
 		this.price = price;
 		this.type = type;
+	}
+	
+	public Item(String store, String address) {
+		super();
+		this.store = store;
+		this.address = address;
 	}
 	
 	public Item(String name, double price, String type, String color, String brand) {
@@ -121,6 +125,24 @@ public class Item {
 
 	public void setPage(Integer page) {
 		this.page = page;
+	}
+	
+	
+	
+	public String getStore() {
+		return store;
+	}
+
+	public void setStore(String nStore) {
+		this.store = nStore;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String nAddress) {
+		this.address = nAddress;
 	}
 	
 }
