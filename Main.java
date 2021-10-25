@@ -1,148 +1,145 @@
+import java.util.Random;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.*;
-public class Main {
+import java.util.Vector;
 
-	List<Footwear> f1 = new ArrayList<>();
+public class Main {
+	Random r = new Random();
 	Scanner scan = new Scanner(System.in);
+	Vector<Artifact> f1 = new Vector<>();
 	
 	void menu() {
-		System.out.println("Just DU It!!");
-		System.out.println("===============");
-		System.out.println("1. Add Footwear");
-		System.out.println("2. View Footwear");
-		System.out.println("3. Update Footwear");
-		System.out.println("4. Delete Footwear");
-		System.out.println("5. Exit");
+		System.out.println("Key Domain");
+		System.out.println("=======================");
+		System.out.println("1. Insert Artifacts");
+		System.out.println("2. View Obtainable Artifacts");
+		System.out.println("3. Grind for artifact");
+		System.out.println("4. Exit");
 		System.out.print(">> ");
 	}
 	
-	
-	String name, type;
-	Long price, wheel;
-	Double height;
-	
-	void add() {
-		do {
-			System.out.println("Footwear name [3 - 25 characters]: ");
-			name = scan.nextLine();
-		}while(name.length() < 3 || name.length() > 25);
-		
-		do {
-			System.out.println("Footwear Price [more than 10000]: ");
-			price = scan.nextLong();scan.nextLine();
-		}while(price <= 10000);
-		
-		do {
-			System.out.println("Footwear Type [Heels / RollerSkate]: ");
-			type = scan.nextLine();
-		}while(!type.equals("Heels") && !type.equals("RollerSkate"));
-		
-		if(type.equals("Heels")) {
+	String type;
+	int chooseArte, bAtk;
+	Double multi;
+	String title, aType , bStat;
+	void input() {
+		System.out.println("Which artifacts you want to add? ");
+		System.out.println("1. Purple Artifact");
+		System.out.println("2. Golden Artifact");
+		System.out.print(">> ");
+		chooseArte = scan.nextInt();scan.nextLine();
+		if(chooseArte < 1 || chooseArte > 2) {
 			do {
-				System.out.println("Footwear height [1.0 - 9.0]: ");
-				height = scan.nextDouble();scan.nextLine();
-			}while(height < 1.0 || height > 9.0);
-			f1.add(new Footwear(name, price, type, height));
-			System.out.println("Footwear added succesfully!!");
+				System.out.println("Wrong input . . .");
+				chooseArte = scan.nextInt();scan.nextLine();
+			}while(chooseArte < 1 || chooseArte > 2);
+		}
+
+		
+		do {
+			System.out.println("Input Artefact Name: ");
+			title = scan.nextLine();
+		}while(title.length() < 3 || title.length() > 15);
+		
+		do {
+			System.out.println("Artifact Type [Flower | Plume | Sands | Circlet | Goblet]: ");
+			aType = scan.nextLine();
+		}while(!(aType.equals("Flower") || aType.equals("Plume") || aType.equals("Sands") || aType.equals("Circlet") || aType.equals("Goblet")));
+		
+		if(aType.equals("Flower") || aType.equals("Plume")) {
+			do {
+				System.out.println("Base Attack [90 - 100]: ");
+				bAtk = scan.nextInt();scan.nextLine();
+			}while(bAtk < 90 || bAtk > 100);
 		} else {
 			do {
-				System.out.println("Footwear total wheel [2 - 4]: ");
-				wheel = scan.nextLong();scan.nextLine();
-			}while(wheel < 2 || wheel > 4);
-			f1.add(new Footwear(name, price, type, wheel));
-			System.out.println("Footwear added succesfully!!");
+				System.out.println("Base Attack [101 - 110]: ");
+				bAtk = scan.nextInt();scan.nextLine();
+			}while(bAtk < 101 || bAtk > 110);
 		}
+		
+		if(chooseArte == 1) {
+			do {
+				System.out.println("Bonus Status[Pryo| Cryo | Anemo | Hydro | Electro ]: ");
+				bStat = scan.nextLine();
+			}while(!(bStat.equals("Pyro") || (bStat.equals("Cryo")) || (bStat.equals("Anemo"))|| (bStat.equals("Hydro")) || (bStat.equals("Electro"))));
+			Integer damage = bAtk * 100;
+			f1.add(new Purple(title, aType, bAtk, damage, bStat, chooseArte));
+			System.out.println("Input Succesfull ");
+			System.out.println();
+			
+		} else {
+			do {
+				System.out.println("Input multiplier 1.5 - 2.0: ");
+				multi = scan.nextDouble();scan.nextLine();
+			}while(multi < 1.5 || multi > 2.0);
+			Integer damage = (int) ((bAtk * multi) * 100);
+			
+			f1.add(new Gold(title, aType, bAtk ,damage, multi, chooseArte));
+			System.out.println("Input Succesful");
+			System.out.println();
+		}
+
 	}
 	
-	void view() {
+	void viewAll() {
 		if(f1.isEmpty()) {
-			System.out.println("No footwear to display!!!");
+			System.out.println("No Artifact");
 		} else {
-			for(int i = 0; i < f1.size(); i++) {
-				System.out.println(i+1);
-				System.out.println("Name: "+f1.get(i).getfName());
-				System.out.println("Price: "+f1.get(i).getfPrice());
-				if(f1.get(i).getfHeight() == null) {
-					System.out.println((f1.get(i).getfHeight() == null) ? "-" : "Height : "+f1.get(i).getfHeight());
-					System.out.println("Total Wheel: "+f1.get(i).getfWheel());
-				} else if(f1.get(i).getfWheel() == null) {
-					System.out.println("Height : "+f1.get(i).getfHeight());
-					System.out.println((f1.get(i).getfWheel() == null) ? "-" : "Total Wheel: "+f1.get(i).getfWheel());
+			for(Artifact f2 : f1) {
+				if(f2 instanceof Purple) {
+					f2.view();
+					System.out.println();
+				} else if(f2 instanceof Gold) {
+					f2.view();
+					System.out.println();
 				}
-				System.out.println();
+			}
+		}
+		System.out.println("press enter to ocntiune. . . ");
+		scan.nextLine();
+	}
+
+	
+	String chara;
+	void menu3() {
+		if(f1.isEmpty()) {
+			System.out.println("No Artifact to grind. . .");
+		} else {
+			do {
+				System.out.println("Input character to grind [Diluc | Xiao | Keqing] insensitive: ");
+				chara = scan.nextLine();
+				if(!(chara.equalsIgnoreCase("Xiao") || chara.equalsIgnoreCase("Keqing") || chara.equalsIgnoreCase("Diluc"))) {
+					do {
+						System.out.println("Character Invalid: ");
+						chara = scan.nextLine();
+					}while(!(chara.equalsIgnoreCase("Xiao") || chara.equalsIgnoreCase("Keqing") || chara.equalsIgnoreCase("Diluc")));
+				}
+			}while(!(chara.equalsIgnoreCase("Xiao") || chara.equalsIgnoreCase("Keqing") || chara.equalsIgnoreCase("Diluc")));
+			int max = f1.size();
+			int min = 0;
+			int rndmArte = min + r.nextInt(max);
+			if(f1.get(rndmArte).getChooseArte() == 1) {
+				System.out.println("Name: "+(f1.get(rndmArte).getName()));
+				System.out.println("Type: "+(f1.get(rndmArte).getType()));
+				System.out.println("Base Attack: "+(f1.get(rndmArte).getBaseAttack()));
+				System.out.println("Damage: "+(f1.get(rndmArte).getDamage()));
+				System.out.println("Bonus Stat: "+((Purple)f1.get(rndmArte)).getBonus());
+				f1.remove(rndmArte);
+			} else {
+				System.out.println("Name: "+(f1.get(rndmArte).getName()));
+				System.out.println("Type: "+(f1.get(rndmArte).getType()));
+				System.out.println("Base Attack: "+(f1.get(rndmArte).getBaseAttack()));
+				System.out.println("Damage: "+(f1.get(rndmArte).getDamage()));
+				f1.remove(rndmArte);
 			}
 		}
 	}
 	
-	Integer index;
-	void update() {
-		view();
-		do {
-			System.out.println("Input footwear index to update: ");
-			index = scan.nextInt();scan.nextLine();
-		}while(index <= 0 || index > f1.size());
-		
-		do {
-			System.out.println("Footwear name [3 - 25 characters]: ");
-			name = scan.nextLine();
-		}while(name.length() < 3 || name.length() > 25);
-		
-		do {
-			System.out.println("Footwear Price [more than 10000]: ");
-			price = scan.nextLong();scan.nextLine();
-		}while(price <= 10000);
-		
-		do {
-			System.out.println("Footwear Type [Heels / RollerSkate]: ");
-			type = scan.nextLine();
-		}while(!type.equals("Heels") && !type.equals("RollerSkate"));
-		
-		if(type.equals("Heels")) {
-			do {
-				System.out.println("Footwear height [1.0 - 9.0]: ");
-				height = scan.nextDouble();scan.nextLine();
-			}while(height < 1.0 || height > 9.0);
-			f1.get(index-1).setfName(name);
-			f1.get(index-1).setfHeight(height);
-			f1.get(index-1).setfPrice(price);
-			f1.get(index-1).setfType(type);
-			f1.get(index-1).setfWheel(null);
-			System.out.println("Footwear updated succesfully!!");
-		} else {
-			do {
-				System.out.println("Footwear total wheel [2 - 4]: ");
-				wheel = scan.nextLong();scan.nextLine();
-			}while(wheel < 2 || wheel > 4);
-			f1.get(index-1).setfName(name);
-			f1.get(index-1).setfWheel(wheel);
-			f1.get(index-1).setfPrice(price);
-			f1.get(index-1).setfType(type);
-			f1.get(index-1).setfHeight(null);
-			System.out.println("Footwear updated succesfully!!");
-		}
-	}
-	
-	Integer delete;
-	void delete() {
-		if(f1.isEmpty()) {
-			System.out.println("There are no footwear to delete!");
-		} else {
-			view();
-			do {
-				System.out.println("Input footwear index to delete");
-				delete = scan.nextInt();scan.nextLine();
-			}while(delete <= 0 || delete > f1.size());
-			
-			f1.remove(delete-1);
-		}
-	}
-	
 	void exit() {
-		String a = "Thanks for using Just DU It Program!. . . ";
+		String a = "Thanks for Playing Miloyo Program!. . . ";
 		for(int i = 0; i < a.length(); i++) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(50);
 			} catch (Exception e) {
 				// TODO: handle exception
 
@@ -152,7 +149,7 @@ public class Main {
 		System.exit(0);
 	}
 	
-	Integer choose;
+	int choose=0;
 	public Main() {
 		// TODO Auto-generated constructor stub
 		do {
@@ -160,30 +157,23 @@ public class Main {
 			choose = scan.nextInt();scan.nextLine();
 			switch (choose) {
 			case 1:
-				add();
+				input();
 				break;
 
 			case 2:
-				view();
+				viewAll();
 				break;
 				
 			case 3:
-				update();
+				menu3();
 				break;
-				
 			case 4:
-				delete();
-				break;
-				
-			case 5:
 				exit();
 				break;
 			}
-		}while(choose != 5);
+		}while(choose != 4);
 	}
 
-
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new Main();
